@@ -1,0 +1,16 @@
+- name: ansible 파일 조작 실습
+  hosts: all
+  become: yes
+
+  vars:
+    target_file: /tmp/sample_app.config_block
+
+  tasks:
+    - name: blockinfile 파일의 맨 아래에 여러줄의 설정 블럭 추가.
+      blockinfile:
+        path: "{{ target_file }}"
+        marker: "# {mark} Ansible DB settiing"
+        block: |
+          db_host = 172.16.8.100
+          db_user = scott
+          db_pass = tiger

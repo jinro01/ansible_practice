@@ -1,0 +1,27 @@
+- name: 여러줄의 문자열을 변수에 담아놓고 활용하는 예제
+  hosts: all
+  become: yes
+
+  vars:
+    greet: |
+      #!/bin/bash
+      echo "ansible로 생성된 스크립트라네요"
+      echo "실행 서버 : {{ inventory_hostname }}"
+      echo "접속 ip : {{ ansible_host }}"
+      echo "작업 일시 : {{ ansible_date_time.date }}"
+    config_block: |
+      [Service]
+      Restart = always
+      User = user1
+  tasks: 
+    - name: 1. scrpit 내용을 파일로 생성
+      copy:
+        content: "{{ greet }}"
+        dest: "~user1/welcome_script.sh"
+        mode: "0755"
+    - name: 2. 만들어진 script를 실행하고 결과를 변수에 담기
+      shell: "~user1/welcome_script.sh"
+      register: script_result
+    - name: 3. 변수에 담긴 내용을 debug 콘솔로 출력하기
+      debug:
+        msg: "{{ script_result.stdout }}"

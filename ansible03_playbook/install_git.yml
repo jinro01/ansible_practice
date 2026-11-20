@@ -1,5 +1,5 @@
 - name: Git 설치 및 사용자 환경 설정
-  hosts: localhost
+  hosts: all
   become: yes
 
   tasks:

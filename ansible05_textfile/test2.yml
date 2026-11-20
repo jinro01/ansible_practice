@@ -1,0 +1,9 @@
+- name: ansible 파일 조작 실습
+  hosts: all
+  become: yes
+
+  vars:
+    target_file: /tmp/sample_app.config_block
+
+  tasks:
+    - name: 

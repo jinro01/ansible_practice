@@ -1,0 +1,24 @@
+- name: ubuntu nginx 삭제
+  hosts: ubuntu
+  become: yes
+  
+  tasks:
+    - name: 서비스 중지 및 비활성화
+      service:
+        state: stopped
+        enabled: no
+      ignore_errors: yes
+    - name: nginx 패키지 삭제
+      apt:
+        name: nginx
+        state: absent
+        purge: yes
+        autoremove: yes
+    - name: 설정파일, 로그, index.html 삭제
+      file:
+        path: "{{ item }}"
+        state: absent
+      loop:
+        - /etc/ngiinx
+        - /var/log/nginx
+        - /var/www/html/index.html
